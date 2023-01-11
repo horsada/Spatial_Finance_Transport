@@ -1,0 +1,16 @@
+﻿Task,Section,Start,End,Completion
+Initial Scoping,Initial Research,2022-11-08,2022-11-22,1
+Literature Review,Initial Research,2022-11-22,2022-12-27,1
+Interim Report,Initial Research,2022-12-06,2023-01-24,0.8
+Ethics Checklist,Initial Research,2023-01-10,2023-01-24,0.8
+Technical Experimentation,Implementation,2022-12-20,2023-01-24,0.5
+Novel Solutions,Implementation,2023-01-24,2023-02-28,0
+Aquire & Process Data,Implementation,2023-02-21,2023-03-21,0
+Create Final Pipeline,Implementation,2023-03-21,2023-04-25,0
+Create & Analyse Results,Optimization,2023-04-25,2023-05-09,0
+Optimize Pipeline,Optimization,2023-05-09,2023-05-23,0
+Clean & Publish Final Code,Optimization,2023-05-23,2023-05-30,0
+Document Results,Deliverables,2023-05-09,2023-05-16,0
+Finalize Report,Deliverables,2023-05-09,2023-06-06,0
+Create Presentation,Deliverables,2023-05-23,2023-06-13,0
+Finalize Presentation,Deliverables,2023-06-13,2023-06-20,0
