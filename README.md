@@ -19,19 +19,25 @@ A brief summary of each folder and its contents/purpose is shown below.
     - Notebooks to retrieve information on traffic and GHG emissions in the UK.
     - Function to extract information (e.g. specific sites from langtitude and longtitude) and feature extraction
     - Primary data sources used for training ANN's
+
 - objectDetection:
     - YOLOv5 vehicle object detection
     - Includes training and inference
+
 - roadCharacteristics:
     - Road extraction using DL
     - Automated road segment length and width information extraction using clustering technique
     - Used to improve AADT and GHG Emissions prediction
+
 - speedEstimation:
     - Average vehicle speed estimation using time lag between satellite image bands (MS1 and MS2)
     - Used to improve AADT prediction
+
 - AADT:
     - Training and inference of ANN for predicting AADT using information from many parts of the pipeline
+
 - GHGEmissions:
     - GHG Emissions training and inference using information from many parts of the pipeline
+    
 - models:
     - Saved trained model and state dict's
