@@ -6,7 +6,7 @@ The full project pipeline is shown in the figure. The input to the pipeline is a
 - GHG Emissions predictions based on AADT prediction for road segment
 - GHG Emissions of local authority area based on road segment GHG emissions prediction
 
-![alt text](https://github.com/horsada/Spatial_Finance_Transport/blob/main/images/Project_Plan.svg)
+![alt text](https://github.com/horsada/Spatial_Finance_Transport/blob/main/images/FYP_Project_Plan.svg)
 
 Each box in the project pipeline figure indicates a distinct model input/output in the pipeline. The idea is that each box would be isolated
 from the rest of the pipeline. This allows for flexiblity in the implementation of each aspect of the pipeline. For example, satellite image preprocessing can
