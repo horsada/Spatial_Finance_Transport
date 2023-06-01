@@ -32,6 +32,7 @@ A brief summary of each folder and its contents/purpose is shown below.
     - **Not currently used in implementation**
 
 - AADT:
+    - Pre-processing data for ANN compatability
     - Training and inference of ANN for predicting AADT using information from many parts of the pipeline
     
 - models:
