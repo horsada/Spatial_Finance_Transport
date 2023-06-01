@@ -31,15 +31,8 @@ A brief summary of each folder and its contents/purpose is shown below.
     - Automated road segment length and width information extraction using clustering technique
     - **Not currently used in implementation**
 
-- speedEstimation:
-    - Average vehicle speed estimation using PCA-based method and the time lag between satellite image bands (MS1 and MS2)
-    - To provide additional flexibility to the pipeline for when live speed data isn't available
-
 - AADT:
     - Training and inference of ANN for predicting AADT using information from many parts of the pipeline
-
-- GHGEmissions:
-    - GHG Emissions training and inference using information from many parts of the pipeline
     
 - models:
     - Saved trained models
@@ -49,3 +42,14 @@ A brief summary of each folder and its contents/purpose is shown below.
 
 - admin:
     - Storing of results from different configurations of the pipeline, for example with and without speed estimation. 
+
+- implementation:
+-   - Potential Sites
+            - mostly Exploratory Data Analysis, but also preprocesses LA AADT and emissions data 
+    - AADT implementation (Multi for when vehicle type data is available)
+    - GHG Emissions implementation (Multi for when vehicle type data is available)
+    - speedEstimation
+            -   Average vehicle speed estimation using PCA-based method and the time lag between satellite image bands (MS1 and MS2)
+            -   To provide additional flexibility to the pipeline for when live speed data isn't available
+    -   evaluation
+            - Plotting graphs, calculating metrics, and doing comparisons between pipeline configuration      
