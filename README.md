@@ -39,12 +39,12 @@ A brief summary of each folder and its contents/purpose is shown below.
     - Saved trained models
 
 - data:
-    - Storing of true data, predicted data, and results
+    - Storing of true data, predicted data, results and plots
 
 - admin:
     - Storing of results from different configurations of the pipeline, for example with and without speed estimation. 
 
-### Implementation
+## Implementation
 
 The following files relate directly to the satellite image and LA's tested and so are considered implementation.
 
@@ -56,4 +56,17 @@ The following files relate directly to the satellite image and LA's tested and s
     - Average vehicle speed estimation using PCA-based method and the time lag between satellite image bands (MS1 and MS2)
     - To provide additional flexibility to the pipeline for when live speed data isn't available
 - evaluation
-    - Plotting graphs, calculating metrics, and doing comparisons between pipeline configurations  
+    - Plotting graphs, calculating metrics, and doing comparisons between pipeline configurations 
+
+## Using the Pipeline
+
+The repo can be used in the following order to generate results, assuming the satellite image(s) have already been pre-processed.
+
+1. dataAPI/trafficAPI: Download count sites (defined by latitude and longtitude) from UK highways england API
+2. dataAPI/GHGEmissionsAPI: Download LA emissions data by road type (Motorways, A-Roads, Minor Roads)
+3. implementation/potentialSites: To generate AADT and GHG Emissions data. Here, we can choose which AADT statistic to use to represent the LA distribution, e.g. max, median mean... for each vehicle type. This can also be used to do EDA on the downloaded data from 1, 2. 
+4. AADT/AADTPreProcessing: To pre-process the downloaded AADT data for ANN compatability
+5. AADT/MultiAADTTraining: Training and validation of ANN models. Can specify model architecture and hyperparameters here. The ANN target variable are the AADT statistic chosen in 3. We also save transformation values for use in AADT prediction
+6. implementation/multiAADTImplementation: To do AADT prediction. Here we load speed data, time data, saved model weights and traffic data transformations to perform predictions.
+7. implementation/multiGHGEmissions: To do GHG emissions prediction. Here we define specific fuel consumption, fuel distributions (petrol, diesel etc.) and motorway lengths in each LA. 
+8. implementation/evaluation: To evaluate each output of the pipeline. Most require ground truth data 
