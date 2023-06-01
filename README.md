@@ -43,16 +43,16 @@ A brief summary of each folder and its contents/purpose is shown below.
 - admin:
     - Storing of results from different configurations of the pipeline, for example with and without speed estimation. 
 
-**Implementation**
+### Implementation
 
 The following files relate directly to the satellite image and LA's tested and so are considered implementation.
 
-    - Potential Sites
-        - mostly Exploratory Data Analysis, but also preprocesses LA AADT and emissions data 
-    - AADT implementation (Multi for when vehicle type data is available)
-    - GHG Emissions implementation (Multi for when vehicle type data is available)
-    - speedEstimation
-        - Average vehicle speed estimation using PCA-based method and the time lag between satellite image bands (MS1 and MS2)
-        - To provide additional flexibility to the pipeline for when live speed data isn't available
-    - evaluation
-        - Plotting graphs, calculating metrics, and doing comparisons between pipeline configurations  
+- Potential Sites
+    - mostly Exploratory Data Analysis, but also preprocesses LA AADT and emissions data 
+- AADT implementation (Multi for when vehicle type data is available)
+- GHG Emissions implementation (Multi for when vehicle type data is available)
+- speedEstimation
+    - Average vehicle speed estimation using PCA-based method and the time lag between satellite image bands (MS1 and MS2)
+    - To provide additional flexibility to the pipeline for when live speed data isn't available
+- evaluation
+    - Plotting graphs, calculating metrics, and doing comparisons between pipeline configurations  
