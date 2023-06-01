@@ -43,7 +43,10 @@ A brief summary of each folder and its contents/purpose is shown below.
 - admin:
     - Storing of results from different configurations of the pipeline, for example with and without speed estimation. 
 
-- implementation:
+**Implementation**
+
+The following files relate directly to the satellite image and LA's tested and so are considered implementation.
+
     - Potential Sites
         - mostly Exploratory Data Analysis, but also preprocesses LA AADT and emissions data 
     - AADT implementation (Multi for when vehicle type data is available)
