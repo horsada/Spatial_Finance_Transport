@@ -25,6 +25,7 @@ A brief summary of each folder and its contents/purpose is shown below.
 
 - objectDetection:
     - YOLOv5 vehicle object detection training and validation
+    - Also includes training notebook for a SWIN backbone RetinaNet model, which is not used in the implementation
 
 - roadCharacteristics:
     - Road extraction using DL
@@ -36,7 +37,7 @@ A brief summary of each folder and its contents/purpose is shown below.
     - Training and inference of ANN for predicting AADT using information from many parts of the pipeline
     
 - models:
-    - Saved trained models
+    - Saved trained models (AADT and object detection)
 
 - data:
     - Storing of true data, predicted data, results and plots
