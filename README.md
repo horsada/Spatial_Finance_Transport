@@ -45,6 +45,9 @@ A brief summary of each folder and its contents/purpose is shown below.
 - admin:
     - Storing of results from different configurations of the pipeline, for example with and without speed estimation. 
 
+- implementation:
+   - Generation of results for object detection, 15-minute traffic counts, speed estimation, AADT and emissions
+
 ## Implementation
 
 The following files relate directly to the satellite image and LA's tested and so are considered implementation.
