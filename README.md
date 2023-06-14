@@ -85,6 +85,9 @@ data/satellite_images: for storing raw satellite images. Example:
 luton_m1_2557a.tif
 ```
 
+data/predicted: for storing predicted data.
+
+
 data/predicted/aadt: predicted aadt (test year). Example:
 ```
 image_id, aadt, cars_and_taxis, buses_and_coaches, lgvs, all_hgvs
