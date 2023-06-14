@@ -76,7 +76,7 @@ The repo can be used in the following order to generate results, assuming the sa
 8. implementation/evaluation: To evaluate each output of the pipeline. Most require ground truth data 
 
 
-**Future Work
+## Future Work
 
 Work is ongoing to allow the pipeline to be run from a single command line input:
 ```
