@@ -6,6 +6,8 @@ The full project pipeline is shown in the figure. The input to the pipeline is a
 - GHG Emissions predictions based on AADT prediction for road segment
 - GHG Emissions of local authority area based on road segment GHG emissions prediction
 
+Unfortunately, European Space Imaging rules prohibit the use of extracted satellite data for use other than the approved project. Thus, this readme.md file will explain the pipeline as best as possible given this limitation. In addition, the notebooks are kept with their outputs for interested readers. 
+
 ![alt text](https://github.com/horsada/Spatial_Finance_Transport/blob/main/images/FYP_Project_Plan.svg)
 
 Each box in the project pipeline figure indicates a distinct model input/output in the pipeline. The idea is that each box would be isolated
@@ -17,7 +19,7 @@ The repo folder structure is as follows:
 - Spatial_Finance_Transport/ARoads: For code and data specific to A-roads
 - Spatial_Finance_Transport/minorRoads: For code and data specific to minor roads
 
-A brief summary of each folder and its contents/purpose is shown below.
+A high-level summary of each directory and its contents/purpose is shown below.
 - dataAPI:
     - Notebooks to retrieve information on traffic and GHG emissions in the UK.
     - Function to extract information (e.g. specific sites from langtitude and longtitude) and feature extraction
@@ -47,6 +49,72 @@ A brief summary of each folder and its contents/purpose is shown below.
 
 - implementation:
    - Generation of results for object detection, 15-minute traffic counts, speed estimation, AADT and emissions
+
+## Data
+
+The data folder is described in more detail in this section and a Luton Local Authority examples is given to help understanding.
+
+data/ground_truth_data: for storing ground truth data
+
+data/ground_truth_data/speed_data: for storing average speeds. Example:
+```
+image_id, avg_mph
+luton_m1_2557a, 65
+```
+
+data/ground_truth_data/time_data: for storing time data. Example:
+```
+image_id, day, month, hour
+luton_m1_2557a, 24, 2, 11
+```
+
+data/ground_truth_data/link_length_data: for storing link lengths. Example:
+```
+image_id, link_length
+luton_m1_2557a, 1.35
+```
+
+data/ground_truth_data/aadt: for storing true aadt (historical year). Example:
+```
+site_name, site_id, report_date, time_period_ending, time_interval, 0-520cm, 521-660cm, ..., aadt
+M1/2557A, 332, 2017-01-01, 0:14:00, 0, 67, 24, 70000
+```
+
+data/satellite_images: for storing raw satellite images. Example:
+```
+luton_m1_2557a.tif
+```
+
+data/predicted/aadt: predicted aadt (test year). Example:
+```
+image_id, aadt, cars_and_taxis, buses_and_coaches, lgvs, all_hgvs
+luton_m1_2557a, 70000, 59850, 0, 12636, 11988
+```
+
+data/predicted/ghg_emissions: predicted ghg emissions (test year). Example:
+```
+image_id, ghg_emissions
+luton_m1_2557a, 25
+```
+
+data/predicted/speed: predicted average speeds. Example:
+```
+image_id, speed_estimates
+luton_m1_2557a, 0
+```
+
+data/predicted/traffic_counts: predicted traffic counts. Example:
+```
+image_id, Total_N15, Small_N15, Medium_N15, Large_N15, Very Large_N15
+luton_m1_2557a, 565, 120, 108, 204, 132
+```
+
+data/predicted/vehicle_counts: predicted vehicle_counts. Example:
+```
+image_id, x_min, x_max, y_min, y_max, category_name, area
+luton_m1_2557a, 583, 599, 1152, 1167, Small Car, 244
+```
+
 
 ## Implementation
 
