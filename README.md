@@ -74,3 +74,19 @@ The repo can be used in the following order to generate results, assuming the sa
 6. implementation/multiAADTImplementation: To do AADT prediction. Here we load speed data, time data, saved model weights and traffic data transformations to perform predictions.
 7. implementation/multiGHGEmissions: To do GHG emissions prediction. Here we define specific fuel consumption, fuel distributions (petrol, diesel etc.) and motorway lengths in each LA. 
 8. implementation/evaluation: To evaluate each output of the pipeline. Most require ground truth data 
+
+
+**Future Work
+
+Work is ongoing to allow the pipeline to be run from a single command line input:
+```
+python main.py --la LA --cs_id CS_ID
+```
+Where the user would add to the following directories as required data:
+- data/satellite_images: raw satellite images in .tif format
+- data/ground_truth_data/speed_data: average speeds from satellite images (if available) in .csv format
+- data/ground_truth_data/time_data: month, day, hour from satellite images in .csv format
+- data/ground_truth_data/link_length_data: Length of road in each satellite image in .csv format
+CSV files must contain a image_id column that matches the name of the satellite image file names. These user inputted CSV files only have 1 row.
+
+The LA argument is specifying the Local Authority and the CS_ID is specifying the count site to use within the LA. 
