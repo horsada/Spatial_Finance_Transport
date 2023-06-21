@@ -8,7 +8,7 @@ The full project pipeline is shown in the figure. The input to the pipeline is a
 
 Unfortunately, European Space Imaging rules prohibit the use of extracted satellite data for use other than the approved project. Thus, this readme.md file will explain the pipeline as best as possible given this limitation. In addition, the notebooks are kept with their outputs for interested readers. 
 
-![alt text](https://github.com/horsada/Spatial_Finance_Transport/blob/main/images/FYP Full Pipeline.svg)
+![alt text](https://github.com/horsada/Spatial_Finance_Transport/blob/main/images/FYP_Full_Pipeline.svg)
 
 Each box in the project pipeline figure indicates a distinct model input/output in the pipeline. The idea is that each box would be isolated
 from the rest of the pipeline. This allows for flexiblity in the implementation of each aspect of the pipeline. For example, satellite image preprocessing can
