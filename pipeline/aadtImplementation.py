@@ -268,6 +268,8 @@ def load_true_speed(TRUE_SPEED_PATH):
 
         df['image_id'] = df['image_id'].astype(str)
 
+        print("df['avg_mph'].values: {}".format(df['avg_mph'].values))
+
         if -1 in df['avg_mph'].values:
             print("Found -1 in avg_mph column of DataFrame:", true_speed_path)
             if_true_speed = False
@@ -330,7 +332,7 @@ def traffic_counts(df_processed_vehicle_counts_list, df_speed_list,
                     print("found match for: {}".format(df_link_length.iloc[0]['image_id']))
 
                     df_speed = df_speed_estimate.loc[df_speed_estimate['image_id'] == df_processed_vehicle_counts.iloc[0]['image_id'],
-                                                    ['image_id', 'avg_speed_estimate']]
+                                                    ['image_id', 'avg_mph']]
 
                     df_speed = df_speed.rename(columns={'avg_speed_estimate': 'avg_mph'})
 
@@ -406,6 +408,8 @@ def concatenate_inputs(df_processed_vehicle_counts_list, df_speed_list, df_time_
 
     df_aadt_features_list = []
 
+    print("Concatenating inputs...")
+
     for df_processed_vehicle_counts in df_processed_vehicle_counts_list:
 
         for df_speed in df_speed_list:
@@ -416,13 +420,15 @@ def concatenate_inputs(df_processed_vehicle_counts_list, df_speed_list, df_time_
 
                     print("Found match for: {}".format(df_processed_vehicle_counts.iloc[0]['image_id']))
 
+                    print("if_true_speed: {}".format(if_true_speed))
+
                     if if_true_speed: 
 
                         df = pd.concat([df_processed_vehicle_counts[['image_id', 'Total_N15',	'Small_N15', 'Medium_N15', 'Large_N15', 'Very Large_N15']], df_speed[['avg_mph']], df_time[['day', 'month', 'hour']]], axis=1)
 
                     else:
 
-                        df = pd.concat([df_processed_vehicle_counts[['image_id', 'Total_N15',	'Small_N15', 'Medium_N15', 'Large_N15', 'Very Large_N15']], df_speed[['avg_speed_estimate']], df_time[['day', 'month', 'hour']]], axis=1)
+                        df = pd.concat([df_processed_vehicle_counts[['image_id', 'Total_N15',	'Small_N15', 'Medium_N15', 'Large_N15', 'Very Large_N15']], df_speed[['avg_mph']], df_time[['day', 'month', 'hour']]], axis=1)
 
                     df_aadt_features_list.append(df)
 
