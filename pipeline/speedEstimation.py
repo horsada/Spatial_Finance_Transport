@@ -38,7 +38,11 @@ def tif_to_array(tif_path):
     print("array shape: {}".format(array.shape))
     return array
 
+def normalize_images(imgs):
+    """Normalize image pixel values to [0, 1] range."""
+    imgs = (imgs - np.min(imgs, axis=(1, 2, 3), keepdims=True)) / (np.max(imgs, axis=(1, 2, 3), keepdims=True) - np.min(imgs, axis=(1, 2, 3), keepdims=True))
 
+    return imgs
 
 def apply_pca_to_wv2_image(ms_img, n_components=5):
     """
@@ -225,6 +229,8 @@ def speed_estimation(IMAGE_DIR, SPEED_ESTIMATION_DIR, LA, SITE_NAME):
         results_list.append(results)
 
         avg_speeds_list.append(avg_speed)
+
+    print(vehicle_centroid_list, results_list, avg_speeds_list)
 
     # saving data
     df_avg_speed = pd.DataFrame(columns=['image_id', 'avg_speed_estimate'])

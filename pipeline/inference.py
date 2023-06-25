@@ -110,7 +110,7 @@ def inference(processed_image_dir,  model_path, vehicle_counts_path, visualize=F
     detection_model = AutoDetectionModel.from_pretrained(
     model_type='yolov5',
     model_path=model_path,
-    confidence_threshold=0.005,
+    confidence_threshold=0.0005,
     device="cpu", # or 'cuda:0'
     )
 

@@ -24,7 +24,7 @@ def process_image_id(LA, site_name):
     return name
 
 
-def save_args(LA, SITE_NAME, LINK_LENGTH, LINK_LENGTH_DIR, TIME_DATE, TIME_DATE_DIR):
+def save_args(LA, SITE_NAME, LINK_LENGTH, LINK_LENGTH_DIR, TRUE_SPEED, TRUE_SPEED_DIR, TIME_DATE, TIME_DATE_DIR):
 
     SITE_NAME = process_image_id(LA=LA, site_name=SITE_NAME)
 
@@ -36,3 +36,8 @@ def save_args(LA, SITE_NAME, LINK_LENGTH, LINK_LENGTH_DIR, TIME_DATE, TIME_DATE_
     HOUR, DAY, MONTH = extract_time_date(TIME_DATE)
     df = pd.DataFrame({'image_id': [SITE_NAME], 'day': [DAY], 'month': [MONTH], 'hour': [HOUR]})
     df.to_csv(TIME_DATE_DIR+'time_'+SITE_NAME+'.csv')
+    
+    # save speed
+    if TRUE_SPEED is not -1:
+        df = pd.DataFrame({'image_id': [SITE_NAME], 'avg_mph': [TRUE_SPEED]})
+        df.to_csv(TRUE_SPEED_DIR+'avg_mpg_'+SITE_NAME+'.csv')

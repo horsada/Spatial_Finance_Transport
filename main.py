@@ -7,6 +7,7 @@ from pipeline.potentialSites import potential_sites
 from pipeline.aadtPreprocessing import aadt_preprocess
 from pipeline.aadtTraining import aadt_training
 from pipeline.aadtImplementation import aadt_implementation
+from pipeline.ghgImplementation import ghg_implementation
 
 
 import argparse
@@ -19,7 +20,7 @@ SPEED_ESTIMATION_DIR = os.path.join(ROOT_DIR_PATH, 'data/predicted/speed_data/')
 TIME_DATE_DIR = os.path.join(ROOT_DIR_PATH, 'data/ground_truth_data/time_data/')
 LINK_LENGTH_DIR = os.path.join(ROOT_DIR_PATH, 'data/ground_truth_data/link_length_data/')
 AADT_DIR = os.path.join(ROOT_DIR_PATH, 'data/ground_truth_data/aadt/')
-MODEL_PATH = os.path.join(ROOT_DIR_PATH, 'models/object_detection_models/best.pt')
+MODEL_PATH = os.path.join(ROOT_DIR_PATH, 'models/object_detection_models/yolov5_road_vehicles.pt')
 VEHILCE_COUNT_DIR = os.path.join(ROOT_DIR_PATH, 'data/predicted/vehicle_counts/')
 AADT_PROCESSED_DIR = os.path.join(ROOT_DIR_PATH, 'data/ground_truth_data/aadt/processed/')
 GHG_EMISSIONS_DATA_PATH = os.path.join(ROOT_DIR_PATH, 'data/ground_truth_data/ghg_emissions/')
@@ -29,6 +30,8 @@ VEHICLE_COUNTS_PATH = os.path.join(ROOT_DIR_PATH, 'data/predicted/vehicle_counts
 TRANSFORM_PATH = os.path.join(ROOT_DIR_PATH, 'data/ground_truth_data/aadt/processed/')
 TRAFFIC_COUNTS_PATH = os.path.join(ROOT_DIR_PATH, 'data/predicted/traffic_counts/')
 AADT_PRED_PATH = os.path.join(ROOT_DIR_PATH, 'data/predicted/aadt/')
+GHG_EMISSIONS_PRED_PATH = os.path.join(ROOT_DIR_PATH, 'data/predicted/ghg_emissions/')
+TRUE_SPEED_DIR = os.path.join(ROOT_DIR_PATH, 'data/ground_truth_data/speed_data/')
 
 def main(**kwargs):
     # Access the keyword arguments
@@ -37,6 +40,7 @@ def main(**kwargs):
     YEAR = kwargs.get('arg2')
     LINK_LENGTH = kwargs.get('arg3')
     TIME_DATE = kwargs.get('arg4')
+    TRUE_SPEED = kwargs.get('arg5')
 
     # print keyword arguments
     print("LA:", LA)
@@ -44,9 +48,10 @@ def main(**kwargs):
     print("Year:", YEAR)
     print("Link length:", LINK_LENGTH)
     print("Time and date:", TIME_DATE)
+    print("True speed:", TRUE_SPEED)
 
     print("------ Saving arguments to folders --------")
-    saves_args_successful = save_args(LA, SITE_NAME, LINK_LENGTH, LINK_LENGTH_DIR, TIME_DATE, TIME_DATE_DIR)
+    saves_args_successful = save_args(LA, SITE_NAME, LINK_LENGTH, LINK_LENGTH_DIR, TRUE_SPEED, TRUE_SPEED_DIR, TIME_DATE, TIME_DATE_DIR)
 
     if saves_args_successful:
         print("--------------- Successfully Saved Keyword arguments -----------------")
@@ -54,7 +59,7 @@ def main(**kwargs):
 
     print("------- Performing Traffic API Data Preparation -----------")
 
-    """trafficapi_success = trafficapi(SITE_NAME, YEAR, AADT_DIR)
+    trafficapi_success = trafficapi(SITE_NAME, YEAR, AADT_DIR)
 
     if trafficapi_success:
         print("--------------- Successfully Performed Traffic API Data Preparation -----------------")
@@ -97,7 +102,7 @@ def main(**kwargs):
     if aadt_preprocess_success:
         print("--------------- Successfully Performed AADT Pre-Processing -----------------")
 
-"""
+
     print("-------- Performing ANN AADT Training --------------------")
 
     aadt_training_success = aadt_training(AADT_PROCESSED_PATH=AADT_PROCESSED_DIR, NN_MODEL_PATH=NN_MODEL_PATH)
@@ -108,12 +113,17 @@ def main(**kwargs):
     print("-------- Performing AADT Implementation --------------------")
 
     aadt_implementation_success = aadt_implementation(MODELS_PATH=NN_MODEL_PATH, VEHICLE_COUNTS_PATH=VEHICLE_COUNTS_PATH, 
-                                                      TRUE_SPEED_PATH=SPEED_ESTIMATION_DIR, 
+                                                      TRUE_SPEED_PATH=TRUE_SPEED_DIR, 
                             TIME_PATH=TIME_DATE_DIR, LINK_LENGTH_PATH=LINK_LENGTH_DIR, TRAFFIC_COUNTS_PATH=TRAFFIC_COUNTS_PATH, 
                             TRANSFORM_PATH=TRANSFORM_PATH, PRED_SPEED_PATH=SPEED_ESTIMATION_DIR, AADT_PRED_PATH=AADT_PRED_PATH)
     
     if aadt_implementation_success:
         print("--------------- Successfully Performed AADT Implementation -----------------")
+
+    ghg_implementation_success = ghg_implementation(AADT_PRED_PATH, VEHILCE_COUNT_DIR, GHG_EMISSIONS_PRED_PATH)
+
+    if ghg_implementation_success:
+        print("--------------- Successfully Performed GHG Implementation -----------------")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -124,9 +134,10 @@ if __name__ == '__main__':
     parser.add_argument('--arg2', type=str, help='Year: YYYY')
     parser.add_argument('--arg3', type=float, help='Link length (km)')
     parser.add_argument('--arg4', type=str, help='Acquisition Time: hh:1-31/1-12')
+    parser.add_argument('--arg5', type=int, help='Speed')
 
 
     args = parser.parse_args()
 
     # Pass the keyword arguments to the main function
-    main(arg0=args.arg0, arg1=args.arg1, arg2=args.arg2, arg3=args.arg3, arg4=args.arg4)
+    main(arg0=args.arg0, arg1=args.arg1, arg2=args.arg2, arg3=args.arg3, arg4=args.arg4, arg5=args.arg5)

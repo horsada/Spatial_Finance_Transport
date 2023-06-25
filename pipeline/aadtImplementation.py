@@ -260,17 +260,22 @@ def load_true_speed(TRUE_SPEED_PATH):
 
     df_speed_list = []
 
+    if_true_speed = True
+
     for true_speed_path in true_speed_paths:
 
         df = pd.read_csv(true_speed_path, skipinitialspace=True)
 
         df['image_id'] = df['image_id'].astype(str)
 
-        df_speed_list.append(df)
+        if -1 in df['avg_mph'].values:
+            print("Found -1 in avg_mph column of DataFrame:", true_speed_path)
+            if_true_speed = False
 
-    print(len(df_speed_list))
+        df_speed_list.append(df)
     
-    return df_speed_list
+    return df_speed_list, if_true_speed
+
 
 
 def load_link_lengths(LINK_LENGTH_PATH):
@@ -397,7 +402,7 @@ def load_time(TIME_PATH):
     return df_time_list
 
 
-def concatenate_inputs(df_processed_vehicle_counts_list, df_speed_list, df_time_list):
+def concatenate_inputs(df_processed_vehicle_counts_list, df_speed_list, df_time_list, if_true_speed=False):
 
     df_aadt_features_list = []
 
@@ -411,7 +416,13 @@ def concatenate_inputs(df_processed_vehicle_counts_list, df_speed_list, df_time_
 
                     print("Found match for: {}".format(df_processed_vehicle_counts.iloc[0]['image_id']))
 
-                    df = pd.concat([df_processed_vehicle_counts[['image_id', 'Total_N15',	'Small_N15', 'Medium_N15', 'Large_N15', 'Very Large_N15']], df_speed[['avg_speed_estimate']], df_time[['day', 'month', 'hour']]], axis=1)
+                    if if_true_speed: 
+
+                        df = pd.concat([df_processed_vehicle_counts[['image_id', 'Total_N15',	'Small_N15', 'Medium_N15', 'Large_N15', 'Very Large_N15']], df_speed[['avg_mph']], df_time[['day', 'month', 'hour']]], axis=1)
+
+                    else:
+
+                        df = pd.concat([df_processed_vehicle_counts[['image_id', 'Total_N15',	'Small_N15', 'Medium_N15', 'Large_N15', 'Very Large_N15']], df_speed[['avg_speed_estimate']], df_time[['day', 'month', 'hour']]], axis=1)
 
                     df_aadt_features_list.append(df)
 
@@ -433,7 +444,9 @@ def aadt_implementation(MODELS_PATH, VEHICLE_COUNTS_PATH, TRUE_SPEED_PATH,
 
     df_processed_vehicle_counts_list = load_and_process_vehicle_counts(VEHICLE_COUNTS_PATH)
 
-    df_true_speed_list = load_true_speed(TRUE_SPEED_PATH)
+    df_true_speed_list, if_true_speed = load_true_speed(TRUE_SPEED_PATH)
+
+    print("Using true speed: {}".format(if_true_speed))
 
     df_speed_estimate = load_speed_estimate(PRED_SPEED_PATH)
 
@@ -441,7 +454,7 @@ def aadt_implementation(MODELS_PATH, VEHICLE_COUNTS_PATH, TRUE_SPEED_PATH,
 
     traffic_counts(df_processed_vehicle_counts_list, df_true_speed_list, 
                    df_link_length_list, TRAFFIC_COUNTS_PATH, 
-                   df_speed_estimate=df_speed_estimate, TRUE_SPEED=False, MODE='none')
+                   df_speed_estimate=df_speed_estimate, TRUE_SPEED=if_true_speed, MODE='none')
 
 
     df_transform_list = load_transform(TRANSFORM_PATH)
@@ -450,7 +463,8 @@ def aadt_implementation(MODELS_PATH, VEHICLE_COUNTS_PATH, TRUE_SPEED_PATH,
 
     df_time_list = load_time(TIME_PATH)
 
-    df_aadt_features_list = concatenate_inputs(df_processed_vehicle_counts_list, df_true_speed_list, df_time_list)
+    df_aadt_features_list = concatenate_inputs(df_processed_vehicle_counts_list, df_true_speed_list, 
+                                               df_time_list, if_true_speed=if_true_speed)
 
     i = 0
 
