@@ -16,21 +16,23 @@ def extract_time_date(time_date):
     return hour, day, month
 
 
-def convert_site_name(site_name):
+def process_image_id(LA, site_name):
     site_name = site_name.replace('/', '_')
 
-    return site_name
+    name = LA.lower()+'_'+site_name.lower()
+
+    return name
 
 
-def save_args(SITE_NAME, LINK_LENGTH, LINK_LENGTH_DIR, TIME_DATE, TIME_DATE_DIR):
+def save_args(LA, SITE_NAME, LINK_LENGTH, LINK_LENGTH_DIR, TIME_DATE, TIME_DATE_DIR):
 
-    SITE_NAME = convert_site_name(site_name=SITE_NAME)
+    SITE_NAME = process_image_id(LA=LA, site_name=SITE_NAME)
 
     # save link length
-    df = pd.DataFrame({'site_name': [SITE_NAME], 'link_length': [LINK_LENGTH]})
+    df = pd.DataFrame({'image_id': [SITE_NAME], 'link_length': [LINK_LENGTH]})
     df.to_csv(LINK_LENGTH_DIR+'link_length_'+SITE_NAME+'.csv')
 
     # save time date
     HOUR, DAY, MONTH = extract_time_date(TIME_DATE)
-    df = pd.DataFrame({'site_name': [SITE_NAME], 'day': [DAY], 'month': [MONTH], 'hour': [HOUR]})
+    df = pd.DataFrame({'image_id': [SITE_NAME], 'day': [DAY], 'month': [MONTH], 'hour': [HOUR]})
     df.to_csv(TIME_DATE_DIR+'time_'+SITE_NAME+'.csv')

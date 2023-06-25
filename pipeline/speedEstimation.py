@@ -185,7 +185,7 @@ def pair_centroids(centroids, threshold, time_lag=0.13):
 
 ################################################################################################ 
 
-def speed_estimation(IMAGE_DIR, SPEED_ESTIMATION_DIR, SITE_NAME):
+def speed_estimation(IMAGE_DIR, SPEED_ESTIMATION_DIR, LA, SITE_NAME):
     ms_image_paths = get_tif_files(IMAGE_DIR)
 
     ms_images_list = []
@@ -229,7 +229,16 @@ def speed_estimation(IMAGE_DIR, SPEED_ESTIMATION_DIR, SITE_NAME):
     # saving data
     df_avg_speed = pd.DataFrame(columns=['image_id', 'avg_speed_estimate'])
 
-    df_avg_speed = df_avg_speed.append({'image_id': SITE_NAME, 'avg_speed_estimate': avg_speed}, ignore_index=True)
+    def process_image_id(LA, site_name):
+        site_name = site_name.replace('/', '_')
+
+        name = LA.lower()+'_'+site_name.lower()
+
+        return name
+    
+    image_id = process_image_id(LA, SITE_NAME)
+
+    df_avg_speed = df_avg_speed.append({'image_id': image_id, 'avg_speed_estimate': avg_speed}, ignore_index=True)
 
     df_avg_speed.to_csv(SPEED_ESTIMATION_DIR+'avg_speed_estimates.csv')
 

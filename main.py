@@ -6,6 +6,8 @@ from pipeline.input import save_args
 from pipeline.potentialSites import potential_sites
 from pipeline.aadtPreprocessing import aadt_preprocess
 from pipeline.aadtTraining import aadt_training
+from pipeline.aadtImplementation import aadt_implementation
+
 
 import argparse
 import os
@@ -22,6 +24,11 @@ VEHILCE_COUNT_DIR = os.path.join(ROOT_DIR_PATH, 'data/predicted/vehicle_counts/'
 AADT_PROCESSED_DIR = os.path.join(ROOT_DIR_PATH, 'data/ground_truth_data/aadt/processed/')
 GHG_EMISSIONS_DATA_PATH = os.path.join(ROOT_DIR_PATH, 'data/ground_truth_data/ghg_emissions/')
 GHG_PROCESSED_PATH = os.path.join(ROOT_DIR_PATH, 'data/ground_truth_data/ghg_emissions/GHG_potential_sites.csv')
+NN_MODEL_PATH = os.path.join(ROOT_DIR_PATH, "models/aadt_models/")
+VEHICLE_COUNTS_PATH = os.path.join(ROOT_DIR_PATH, 'data/predicted/vehicle_counts/')
+TRANSFORM_PATH = os.path.join(ROOT_DIR_PATH, 'data/ground_truth_data/aadt/processed/')
+TRAFFIC_COUNTS_PATH = os.path.join(ROOT_DIR_PATH, 'data/predicted/traffic_counts/')
+AADT_PRED_PATH = os.path.join(ROOT_DIR_PATH, 'data/predicted/aadt/')
 
 def main(**kwargs):
     # Access the keyword arguments
@@ -39,7 +46,7 @@ def main(**kwargs):
     print("Time and date:", TIME_DATE)
 
     print("------ Saving arguments to folders --------")
-    saves_args_successful = save_args(SITE_NAME, LINK_LENGTH, LINK_LENGTH_DIR, TIME_DATE, TIME_DATE_DIR)
+    saves_args_successful = save_args(LA, SITE_NAME, LINK_LENGTH, LINK_LENGTH_DIR, TIME_DATE, TIME_DATE_DIR)
 
     if saves_args_successful:
         print("--------------- Successfully Saved Keyword arguments -----------------")
@@ -47,7 +54,7 @@ def main(**kwargs):
 
     print("------- Performing Traffic API Data Preparation -----------")
 
-    trafficapi_success = trafficapi(SITE_NAME, YEAR, AADT_DIR)
+    """trafficapi_success = trafficapi(SITE_NAME, YEAR, AADT_DIR)
 
     if trafficapi_success:
         print("--------------- Successfully Performed Traffic API Data Preparation -----------------")
@@ -69,7 +76,7 @@ def main(**kwargs):
 
     print("-------- Performing Average Vehicle Speed --------------------")
 
-    speed_esimation_success, speed_estimate = speed_estimation(IMAGE_DIR, SPEED_ESTIMATION_DIR, SITE_NAME)
+    speed_esimation_success, speed_estimate = speed_estimation(IMAGE_DIR, SPEED_ESTIMATION_DIR, LA, SITE_NAME)
 
     if speed_esimation_success:
         print("--------------- Successfully Performed Speed Estimation -----------------")
@@ -82,15 +89,31 @@ def main(**kwargs):
     if potential_sites_success:
         print("--------------- Successfully Performed Potential Sites Processing -----------------")
 
+
+    print("-------- Performing AADT Pre-Processing --------------------")
+
     aadt_preprocess_success = aadt_preprocess(aadt_path=AADT_DIR, processed_path=AADT_PROCESSED_DIR)
 
     if aadt_preprocess_success:
         print("--------------- Successfully Performed AADT Pre-Processing -----------------")
 
-    aadt_training_success = aadt_training(aadt_path=AADT_DIR, processed_path=AADT_PROCESSED_DIR)
+"""
+    print("-------- Performing ANN AADT Training --------------------")
+
+    aadt_training_success = aadt_training(AADT_PROCESSED_PATH=AADT_PROCESSED_DIR, NN_MODEL_PATH=NN_MODEL_PATH)
 
     if aadt_training_success:
         print("--------------- Successfully Performed AADT ANN Training -----------------")
+
+    print("-------- Performing AADT Implementation --------------------")
+
+    aadt_implementation_success = aadt_implementation(MODELS_PATH=NN_MODEL_PATH, VEHICLE_COUNTS_PATH=VEHICLE_COUNTS_PATH, 
+                                                      TRUE_SPEED_PATH=SPEED_ESTIMATION_DIR, 
+                            TIME_PATH=TIME_DATE_DIR, LINK_LENGTH_PATH=LINK_LENGTH_DIR, TRAFFIC_COUNTS_PATH=TRAFFIC_COUNTS_PATH, 
+                            TRANSFORM_PATH=TRANSFORM_PATH, PRED_SPEED_PATH=SPEED_ESTIMATION_DIR, AADT_PRED_PATH=AADT_PRED_PATH)
+    
+    if aadt_implementation_success:
+        print("--------------- Successfully Performed AADT Implementation -----------------")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
