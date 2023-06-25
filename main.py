@@ -41,6 +41,7 @@ def main(**kwargs):
     LINK_LENGTH = kwargs.get('arg3')
     TIME_DATE = kwargs.get('arg4')
     TRUE_SPEED = kwargs.get('arg5')
+    SAT_IMAGE_PATH = kwargs.get('arg6')
 
     # print keyword arguments
     print("LA:", LA)
@@ -49,9 +50,10 @@ def main(**kwargs):
     print("Link length:", LINK_LENGTH)
     print("Time and date:", TIME_DATE)
     print("True speed:", TRUE_SPEED)
+    print("Satellite image path:", SAT_IMAGE_PATH)
 
     print("------ Saving arguments to folders --------")
-    saves_args_successful = save_args(LA, SITE_NAME, LINK_LENGTH, LINK_LENGTH_DIR, TRUE_SPEED, TRUE_SPEED_DIR, TIME_DATE, TIME_DATE_DIR)
+    saves_args_successful = save_args(LA, SITE_NAME, LINK_LENGTH, LINK_LENGTH_DIR, TRUE_SPEED, TRUE_SPEED_DIR, TIME_DATE, TIME_DATE_DIR, SAT_IMAGE_PATH, IMAGE_DIR)
 
     if saves_args_successful:
         print("--------------- Successfully Saved Keyword arguments -----------------")
@@ -135,9 +137,10 @@ if __name__ == '__main__':
     parser.add_argument('--arg3', type=float, help='Link length (km)')
     parser.add_argument('--arg4', type=str, help='Acquisition Time: hh:1-31/1-12')
     parser.add_argument('--arg5', type=int, help='Speed')
+    parser.add_argument('--arg6', type=str, help='Sat Image Path')
 
 
     args = parser.parse_args()
 
     # Pass the keyword arguments to the main function
-    main(arg0=args.arg0, arg1=args.arg1, arg2=args.arg2, arg3=args.arg3, arg4=args.arg4, arg5=args.arg5)
+    main(arg0=args.arg0, arg1=args.arg1, arg2=args.arg2, arg3=args.arg3, arg4=args.arg4, arg5=args.arg5, arg6=args.arg6)
