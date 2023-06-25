@@ -128,6 +128,9 @@ def main(**kwargs):
         print("--------------- Successfully Performed GHG Implementation -----------------")
 
 if __name__ == '__main__':
+
+    print("-"*50)
+    print("Starting Program...")
     parser = argparse.ArgumentParser()
 
     # Define the keyword arguments
@@ -144,3 +147,6 @@ if __name__ == '__main__':
 
     # Pass the keyword arguments to the main function
     main(arg0=args.arg0, arg1=args.arg1, arg2=args.arg2, arg3=args.arg3, arg4=args.arg4, arg5=args.arg5, arg6=args.arg6)
+
+    print("-"*50)
+    print("Exiting Program...")

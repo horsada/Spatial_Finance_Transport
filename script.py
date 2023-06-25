@@ -18,7 +18,7 @@ args1 = [
 ]
 
 subprocess.run(args1)
-
+"""
 # Second invocation of main.py with different arguments
 args2 = [
     'python3',
@@ -37,6 +37,6 @@ print("Running second arguments")
 subprocess.run(args2)
 
 print("-"*50)
-
+"""
 print("Sucessfully finished running script!")
 print("-"*50)
