@@ -1,9 +1,11 @@
 from pipeline.trafficapi import trafficapi
 from pipeline.inference import inference
 from pipeline.image_preprocessing import convert_ms_images_to_rgb
-from pipeline.speedEstimation import speed_esimation
+from pipeline.speedEstimation import speed_estimation
 from pipeline.input import save_args
-from pipeline.aadtpreprocessing import aadt_preprocess
+from pipeline.potentialSites import potential_sites
+from pipeline.aadtPreprocessing import aadt_preprocess
+from pipeline.aadtTraining import aadt_training
 
 import argparse
 import os
@@ -18,15 +20,19 @@ AADT_DIR = os.path.join(ROOT_DIR_PATH, 'data/ground_truth_data/aadt/')
 MODEL_PATH = os.path.join(ROOT_DIR_PATH, 'models/object_detection_models/best.pt')
 VEHILCE_COUNT_DIR = os.path.join(ROOT_DIR_PATH, 'data/predicted/vehicle_counts/')
 AADT_PROCESSED_DIR = os.path.join(ROOT_DIR_PATH, 'data/ground_truth_data/aadt/processed/')
+GHG_EMISSIONS_DATA_PATH = os.path.join(ROOT_DIR_PATH, 'data/ground_truth_data/ghg_emissions/')
+GHG_PROCESSED_PATH = os.path.join(ROOT_DIR_PATH, 'data/ground_truth_data/ghg_emissions/GHG_potential_sites.csv')
 
 def main(**kwargs):
     # Access the keyword arguments
+    LA = kwargs.get('arg0')
     SITE_NAME = kwargs.get('arg1')
     YEAR = kwargs.get('arg2')
     LINK_LENGTH = kwargs.get('arg3')
     TIME_DATE = kwargs.get('arg4')
 
     # print keyword arguments
+    print("LA:", LA)
     print("Site name:", SITE_NAME)
     print("Year:", YEAR)
     print("Link length:", LINK_LENGTH)
@@ -63,20 +69,34 @@ def main(**kwargs):
 
     print("-------- Performing Average Vehicle Speed --------------------")
 
-    speed_esimation_success, speed_estimate = speed_esimation(IMAGE_DIR, SPEED_ESTIMATION_DIR, SITE_NAME)
+    speed_esimation_success, speed_estimate = speed_estimation(IMAGE_DIR, SPEED_ESTIMATION_DIR, SITE_NAME)
 
     if speed_esimation_success:
         print("--------------- Successfully Performed Speed Estimation -----------------")
         print("Average vehicle speed: {}".format(speed_estimate))
 
-    aadt_preprocess_success = aadt_preprocess(AADT_DIR, AADT_PROCESSED_DIR)
+    print("-------- Performing Potential Sites Processing --------------------")
 
+    potential_sites_success = potential_sites(CHOSEN_COUNT_SITES=[(LA, SITE_NAME)], AADT_DATA_PATH=AADT_DIR, GHG_PROCESSED_PATH=GHG_PROCESSED_PATH, GHG_EMISSIONS_DATA_PATH=GHG_EMISSIONS_DATA_PATH)
 
+    if potential_sites_success:
+        print("--------------- Successfully Performed Potential Sites Processing -----------------")
+
+    aadt_preprocess_success = aadt_preprocess(aadt_path=AADT_DIR, processed_path=AADT_PROCESSED_DIR)
+
+    if aadt_preprocess_success:
+        print("--------------- Successfully Performed AADT Pre-Processing -----------------")
+
+    aadt_training_success = aadt_training(aadt_path=AADT_DIR, processed_path=AADT_PROCESSED_DIR)
+
+    if aadt_training_success:
+        print("--------------- Successfully Performed AADT ANN Training -----------------")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     # Define the keyword arguments
+    parser.add_argument('--arg0', type=str, help='LA')
     parser.add_argument('--arg1', type=str, help='Site name')
     parser.add_argument('--arg2', type=str, help='Year: YYYY')
     parser.add_argument('--arg3', type=float, help='Link length (km)')
@@ -86,4 +106,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # Pass the keyword arguments to the main function
-    main(arg1=args.arg1, arg2=args.arg2, arg3=args.arg3, arg4=args.arg4)
+    main(arg0=args.arg0, arg1=args.arg1, arg2=args.arg2, arg3=args.arg3, arg4=args.arg4)

@@ -185,7 +185,7 @@ def pair_centroids(centroids, threshold, time_lag=0.13):
 
 ################################################################################################ 
 
-def speed_esimation(IMAGE_DIR, SPEED_ESTIMATION_DIR, SITE_NAME):
+def speed_estimation(IMAGE_DIR, SPEED_ESTIMATION_DIR, SITE_NAME):
     ms_image_paths = get_tif_files(IMAGE_DIR)
 
     ms_images_list = []
