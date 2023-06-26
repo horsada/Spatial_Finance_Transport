@@ -8,6 +8,7 @@ from pipeline.aadtPreprocessing import aadt_preprocess
 from pipeline.aadtTraining import aadt_training
 from pipeline.aadtImplementation import aadt_implementation
 from pipeline.ghgImplementation import ghg_implementation
+from pipeline.cleanPipeline import clean_pipeline
 
 
 import argparse
@@ -51,6 +52,13 @@ def main(**kwargs):
     print("Time and date:", TIME_DATE)
     print("True speed:", TRUE_SPEED)
     print("Satellite image path:", SAT_IMAGE_PATH)
+
+    print("-------- Performing Clean Pipeline --------------------")
+
+    clean_pipeline_success = clean_pipeline(ROOT_DIR_PATH)
+
+    if clean_pipeline_success:
+        print("--------------- Successfully Performed Pipeline Cleaning -----------------")
 
     print("------ Saving arguments to folders --------")
     saves_args_successful = save_args(LA, SITE_NAME, LINK_LENGTH, LINK_LENGTH_DIR, TRUE_SPEED, TRUE_SPEED_DIR, TIME_DATE, TIME_DATE_DIR, SAT_IMAGE_PATH, IMAGE_DIR)
@@ -122,10 +130,19 @@ def main(**kwargs):
     if aadt_implementation_success:
         print("--------------- Successfully Performed AADT Implementation -----------------")
 
+    print("-------- Performing GHG Implementation --------------------")
+
     ghg_implementation_success = ghg_implementation(AADT_PRED_PATH, VEHILCE_COUNT_DIR, GHG_EMISSIONS_PRED_PATH)
 
     if ghg_implementation_success:
         print("--------------- Successfully Performed GHG Implementation -----------------")
+    
+    print("-------- Performing Clean Pipeline --------------------")
+
+    clean_pipeline_success = clean_pipeline(ROOT_DIR_PATH)
+
+    if clean_pipeline_success:
+        print("--------------- Successfully Performed Pipeline Cleaning -----------------")
 
 if __name__ == '__main__':
 
